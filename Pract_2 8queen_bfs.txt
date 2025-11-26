@@ -1,0 +1,46 @@
+from collections import deque
+
+# Check if placing a queen at (row, col) is safe
+def is_safe(state, row, col):
+    for r in range(row):
+        c = state[r]
+        if c == col or abs(c - col) == abs(r - row):
+            return False
+    return True
+
+# BFS to solve 8-Queen
+def bfs_8_queen():
+    queue = deque()
+    queue.append([])   # empty board initially
+
+    while queue:
+        state = queue.popleft()
+        row = len(state)
+
+        # if 8 queens placed → solution found
+        if row == 8:
+            return state
+
+        # try all 8 columns for the next queen
+        for col in range(8):
+            if is_safe(state, row, col):
+                queue.append(state + [col])
+
+    return None
+
+
+# Print board
+def print_board(solution):
+    print("\nSolution Board:")
+    for r in range(8):
+        row = ["Q" if solution[r] == c else "." for c in range(8)]
+        print(" ".join(row))
+
+# MAIN
+solution = bfs_8_queen()
+
+if solution:
+    print("Solution Found:", solution)
+    print_board(solution)
+else:
+    print("No solution exists")
