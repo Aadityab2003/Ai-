@@ -1,0 +1,50 @@
+# 8-Queen problem using DFS (Backtracking)
+
+# Check if a queen can be placed safely
+def is_safe(board, row, col):
+    # Check column
+    for i in range(row):
+        if board[i] == col:
+            return False
+
+    # Check upper-left diagonal
+    i, j = row - 1, col - 1
+    while i >= 0 and j >= 0:
+        if board[i] == j:
+            return False
+        i -= 1
+        j -= 1
+
+    # Check upper-right diagonal
+    i, j = row - 1, col + 1
+    while i >= 0 and j < 8:
+        if board[i] == j:
+            return False
+        i -= 1
+        j += 1
+
+    return True
+
+
+# DFS function to place queens
+def dfs_place_queens(row, board, solutions):
+    if row == 8:                 # All queens placed
+        solutions.append(board.copy())
+        return
+
+    for col in range(8):         # Try each column
+        if is_safe(board, row, col):
+            board[row] = col     # Place queen
+            dfs_place_queens(row + 1, board, solutions)  # Go deeper (DFS)
+            # Backtracking happens automatically when returning
+
+
+# MAIN
+board = [-1] * 8                 # board[row] = col position of queen
+solutions = []
+
+dfs_place_queens(0, board, solutions)
+
+print("Total Solutions:", len(solutions))
+print("\nOne Solution (row:column):")
+print(solutions[0])
